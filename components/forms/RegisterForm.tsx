@@ -14,8 +14,10 @@ import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { FormFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { GenderOptions } from "@/constants";
+import { Doctors, GenderOptions } from "@/constants";
 import { Label } from "../ui/label";
+import { SelectItem } from "../ui/select";
+import Image from "next/image";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -60,10 +62,11 @@ const RegisterForm = ({ user }: { user: User }) => {
           <p className="text-dark-700">Schedule for your first appointment. </p>
         </section>
 
-        <section className="space-y-6">
+        <section className="space-y-6 text-white">
           <div className="mb-9 space-y-1"></div>
           <h2 className="sub-header">Personal information </h2>
         </section>
+
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
@@ -114,9 +117,9 @@ const RegisterForm = ({ user }: { user: User }) => {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  {GenderOptions.map((option) =>(
+                  {GenderOptions.map((option) => (
                     <div className="radio-group" key={option}>
-                      <RadioGroupItem value={option} id={option}/>
+                      <RadioGroupItem value={option} id={option} />
                       <Label htmlFor={option} className="cursor-pointer">
                         {option}
                       </Label>
@@ -127,10 +130,70 @@ const RegisterForm = ({ user }: { user: User }) => {
             )}
           />
         </div>
+        <section className="space-y-6 text-white">
+          <div className="mb-9 space-y-1"></div>
+          <h2 className="sub-header">Medical information </h2>
+        </section>
 
-        <div className="flex flex-col gap-6 xl:flex-row"></div>
+        <CustomFormField
+          fieldType={FormFieldType.SELECT}
+          control={form.control}
+          name="primaryPhysician"
+          label="Primary Physician"
+          placeholder="Select a Physician"
+        >
+          {Doctors.map((doctor) =>(
+            <SelectItem key={doctor.name} value={doctor.name}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Image 
+                  src={doctor.image}
+                  width={32}
+                  height={32}
+                  alt={doctor.name}
+                  className="rounded-full border border-dark-500"
+                />
+                <p>{doctor.name}</p>
+              </div>
 
-        <div className="flex flex-col gap-6 xl:flex-row"></div>
+            </SelectItem>
+          ))}
+        </CustomFormField>
+
+        <div className="flex flex-col gap-6 xl:flex-row text-white">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="address"
+            label="Address"
+            placeholder="11th Street, New York"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="occupation"
+            label="Occupation"
+            placeholder="Software engineer"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="emergencyContactName"
+            label="Emergency contact name"
+            placeholder="Guardiens name"
+
+          />
+
+          <CustomFormField
+            fieldType={FormFieldType.PHONE_INPUT}
+            control={form.control}
+            name="emergencyContactNumber"
+            label="Emergency contact number"
+            placeholder="(+420) 123-4567"
+          />
+        </div>
 
         <div className="flex flex-col gap-6 xl:flex-row"></div>
 
