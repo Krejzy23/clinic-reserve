@@ -130,34 +130,6 @@ const RegisterForm = ({ user }: { user: User }) => {
             )}
           />
         </div>
-        <section className="space-y-6 text-white">
-          <div className="mb-9 space-y-1"></div>
-          <h2 className="sub-header">Medical information </h2>
-        </section>
-
-        <CustomFormField
-          fieldType={FormFieldType.SELECT}
-          control={form.control}
-          name="primaryPhysician"
-          label="Primary Physician"
-          placeholder="Select a Physician"
-        >
-          {Doctors.map((doctor) =>(
-            <SelectItem key={doctor.name} value={doctor.name}>
-              <div className="flex cursor-pointer items-center gap-2">
-                <Image 
-                  src={doctor.image}
-                  width={32}
-                  height={32}
-                  alt={doctor.name}
-                  className="rounded-full border border-dark-500"
-                />
-                <p>{doctor.name}</p>
-              </div>
-
-            </SelectItem>
-          ))}
-        </CustomFormField>
 
         <div className="flex flex-col gap-6 xl:flex-row text-white">
           <CustomFormField
@@ -183,7 +155,6 @@ const RegisterForm = ({ user }: { user: User }) => {
             name="emergencyContactName"
             label="Emergency contact name"
             placeholder="Guardiens name"
-
           />
 
           <CustomFormField
@@ -192,6 +163,68 @@ const RegisterForm = ({ user }: { user: User }) => {
             name="emergencyContactNumber"
             label="Emergency contact number"
             placeholder="(+420) 123-4567"
+          />
+        </div>
+
+        <section className="space-y-6 text-white">
+          <div className="mb-9 space-y-1"></div>
+          <h2 className="sub-header">Medical information </h2>
+        </section>
+
+        <CustomFormField
+          fieldType={FormFieldType.SELECT}
+          control={form.control}
+          name="primaryPhysician"
+          label="Primary Physician"
+          placeholder="Select a Physician"
+        >
+          {Doctors.map((doctor) => (
+            <SelectItem key={doctor.name} value={doctor.name}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Image
+                  src={doctor.image}
+                  width={32}
+                  height={32}
+                  alt={doctor.name}
+                  className="rounded-full border border-dark-500"
+                />
+                <p>{doctor.name}</p>
+              </div>
+            </SelectItem>
+          ))}
+        </CustomFormField>
+
+        <div className="flex flex-col gap-6 xl:flex-row text-white">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="insuranceProvider"
+            label="Insurance provider"
+            placeholder="BlueCross, BlueShield"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="insurrancePolicyNumber"
+            label="Insurrance policy number"
+            placeholder="ABC123456789"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row text-white">
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="allergies"
+            label="Allergies (if any)"
+            placeholder="Peanuts, Seafood, Pollen"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="currentMedication"
+            label="Current medication (if any)"
+            placeholder="Antibiotic 1mg "
           />
         </div>
 
