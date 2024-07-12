@@ -12,7 +12,7 @@ import { Control } from "react-hook-form";
 import { FormFieldType } from "./forms/PatientForm";
 import PhoneInput from "react-phone-number-input";
 import Image from "next/image";
-import { E164Number } from "libphonenumber-js/core";
+import { E164Number, CountryCode } from "libphonenumber-js/core";
 import "react-phone-number-input/style.css";
 import { Checkbox } from "./ui/checkbox";
 
@@ -21,6 +21,7 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import { useEffect, useState } from "react";
 
 interface CustomProps {
   control: Control<any>;
@@ -36,6 +37,41 @@ interface CustomProps {
   children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
 }
+const PhoneInputWrapper = ({
+  defaultCountry,
+  placeholder,
+  value,
+  onChange,
+}: {
+  defaultCountry: CountryCode;
+  placeholder?: string;
+  value: E164Number | undefined;
+  onChange: (value?: E164Number) => void;
+}) => {
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) {
+    return null;
+  }
+
+  return (
+    <FormControl>
+      <PhoneInput
+        defaultCountry={defaultCountry}
+        placeholder={placeholder}
+        international
+        withCountryCallingCode
+        value={value}
+        onChange={onChange}
+        className="input-phone"
+      />
+    </FormControl>
+  );
+};
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   const {
@@ -73,14 +109,11 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     case FormFieldType.PHONE_INPUT:
       return (
         <FormControl>
-          <PhoneInput
+          <PhoneInputWrapper
             defaultCountry="CZ"
             placeholder={placeholder}
-            international
-            withCountryCallingCode
             value={field.value as E164Number | undefined}
-            onChange={field.onChange}
-            className="input-phone"
+            onChange={(value) => field.onChange(value)}
           />
         </FormControl>
       );
@@ -124,7 +157,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             <ReactDatePicker
               showTimeSelect={props.showTimeSelect ?? false}
               selected={field.value}
-              onChange={(date: Date) => field.onChange(date)}
+              //check funcionality in db 
+              onChange={(date: Date | null) => field.onChange(date)}
               timeInputLabel="Time:"
               dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
               wrapperClassName="date-picker"
