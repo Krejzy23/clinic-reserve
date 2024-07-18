@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
@@ -36,22 +35,26 @@ const PatientForm = () => {
     },
   });
 
-  async function onSubmit({ name, email, phone }: z.infer<typeof UserFormValidation>) {
+  async function onSubmit( values : z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
 
     try {
-      const userData = {
-        name,
-        email,
-        phone
+      const user = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
       }
-      const user = await createUser(userData);
+      const newUser = await createUser(user);
 
-      if(user) router.push(`/patients/${user.$id}/register`)
+      if (newUser) {
+        router.push(`/patients/${newUser.$id}/register`);
+      }
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   }
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
