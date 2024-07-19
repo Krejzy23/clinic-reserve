@@ -26,7 +26,24 @@ const Admin = () => {
         </section>
 
         <section className='admin-stat'>
-          <StatCard />
+          <StatCard 
+            type="appointments"
+            count={5}
+            label="Schedule appointment"
+            icon="/assets/icons/appointments.svg"
+          />
+          <StatCard 
+            type="pending"
+            count={10}
+            label="Pending appointment"
+            icon="/assets/icons/pending.svg"
+          />
+          <StatCard 
+            type="cancelled"
+            count={2}
+            label="Cancelled appointment"
+            icon="/assets/icons/cancelled.svg"
+          />
         </section>
       </main>
     </div>
